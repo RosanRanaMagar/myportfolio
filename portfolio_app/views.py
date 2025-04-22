@@ -1,7 +1,10 @@
 # portfolio_app/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Project
 from .forms import ContactForm
+from django.contrib import messages
+from .models import ContactMessage
+from django.core.mail import send_mail
 
 def home(request):
     return render(request, 'portfolio_app/home.html')
@@ -14,28 +17,38 @@ def projects(request):
     return render(request, 'portfolio_app/projects.html', {'projects': projects})
 
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import ContactForm
-from .models import ContactMessage
+
 
 def contact_view(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Manually save data to the database
-            ContactMessage.objects.create(
+            contact_message = ContactMessage.objects.create(
                 name=form.cleaned_data['name'],
                 email=form.cleaned_data['email'],
                 phone=form.cleaned_data.get('phone', ''),
                 message=form.cleaned_data['message']
             )
+
+            # Send Email Notification to Admin
+            admin_email = 'admin_email@gmail.com'  # Replace with the admin's email address
+            subject = f"New Contact Form Submission from {form.cleaned_data['name']}"
+            message = f"""
+            You have received a new message from your contact form:
+            
+            Name: {form.cleaned_data['name']}
+            Email: {form.cleaned_data['email']}
+            Phone: {form.cleaned_data.get('phone', 'N/A')}
+            Message: {form.cleaned_data['message']}
+            """
+            send_mail(subject, message, 'your_gmail_address@gmail.com', [admin_email])
+
             messages.success(request, "Your message has been sent successfully!")
             return redirect('contact')  # Redirect to prevent duplicate submissions
     else:
         form = ContactForm()
 
-    return render(request, 'portfolio_app/contact.html', {'form': form}) 
+    return render(request, 'portfolio_app/contact.html', {'form': form})
     
 """
     

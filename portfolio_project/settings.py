@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,35 @@ INSTALLED_APPS = [
     'portfolio_app', # Add this line to the list of installed apps
 ]
 
+JAZZMIN_SETTINGS = {
+    # Title of the window (defaults to current_admin_site.site_title if absent)
+    "site_title": "MyPortfolio Admin",
+    # Title on the login screen and brand (19 chars max)
+    "site_header": "MyPortfolio",
+    "site_brand": "MyPortfolio",
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to MyPortfolio Admin",
+    # Copyright text in the footer
+  
+    # Optional: Add a logo (place it in your static files, e.g., static/images/logo.png)
+    "site_logo": "images/logo.png",
+    # Enable language chooser (if you use internationalization)
+    "language_chooser": False,
+    # Show the sidebar
+    "show_sidebar": True,
+    # Auto-expand the navigation menu
+    "navigation_expanded": True,
+}
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": True,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "sidebar": "sidebar-dark-primary",
+    "theme": "cyborg",  # Options: flatly, cerulean, cyborg, darkly, etc.
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,11 +106,14 @@ WSGI_APPLICATION = 'portfolio_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL engine
+        'NAME': 'myportfolio',                   # Database name
+        'USER': 'postgres',                 # PostgreSQL user
+        'PASSWORD': 'rosan',                  # User password
+        'HOST': 'localhost',                        # Host (localhost for local setup)
+        'PORT': '5432',                             # Default PostgreSQL port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -138,3 +171,12 @@ ADMIN_PHONE_NUMBER = '+9779814578091' """
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'rosanranamagar34@gmail.com'  # Your Gmail sender address
+EMAIL_HOST_PASSWORD = 'joja rmad yxeb kjwa'  # App Password if 2FA is enabled
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

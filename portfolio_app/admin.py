@@ -8,7 +8,7 @@ admin.site.register(Project)
 from .models import ContactMessage
 
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'message', 'subject', 'is_read')  # Fields shown in the list view
+    list_display = ('name', 'email', 'phone', 'message', 'is_read')  # Fields shown in the list view
     list_filter = ('created_at', 'is_read')  # Add filters for easier searching (e.g., by date and read status)
     search_fields = ('name', 'email', 'subject', 'message')  # Fields searchable in the admin
     ordering = ('-created_at',)  # Order by the most recent message first
